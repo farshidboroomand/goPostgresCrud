@@ -1,7 +1,19 @@
 package main
 
-import "fmt"
+import (
+	"log"
+
+	"github.com/farshidboroomand/goPostgresCrud/internal/database"
+	"github.com/farshidboroomand/goPostgresCrud/internal/server"
+)
 
 func main() {
-	fmt.Println("initiating the program")
+	db, err := database.NewDatabaseClient()
+	if err != nil {
+		log.Fatalf("failed to initialize Dataabse Client: %s", err)
+	}
+	srv := server.NewEchoServer(db)
+	if err := srv.Start(); err != nil {
+		log.Fatalf(err.Error())
+	}
 }
