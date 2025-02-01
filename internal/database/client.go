@@ -9,18 +9,18 @@ import (
 	"gorm.io/gorm/schema"
 )
 
-type DatabaseCient interface {
+type DatabaseClient interface {
 	Ready() bool
 }
 
 type Client struct {
-	Db *gorm.DB
+	DB *gorm.DB
 }
 
-// Ready implements DatabaseCient.
+// Ready implements DatabaseClient.
 func (c Client) Ready() bool {
 	var ready string
-	tx := c.Db.Raw("SELECT 1 as ready").Scan(&ready)
+	tx := c.DB.Raw("SELECT 1 as ready").Scan(&ready)
 	if tx.Error != nil {
 		return false
 	}
@@ -32,13 +32,13 @@ func (c Client) Ready() bool {
 	return false
 }
 
-func NewDatabaseClient() (DatabaseCient, error) {
-	dsn := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
+func NewDatabaseClient() (DatabaseClient, error) {
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=%s",
 		"localhost",
-		"5432",
 		"postgres",
 		"postgres",
-		"password",
+		"postgres",
+		5432,
 		"disable",
 	)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
@@ -54,7 +54,7 @@ func NewDatabaseClient() (DatabaseCient, error) {
 		return nil, err
 	}
 	client := Client{
-		Db: db,
+		DB: db,
 	}
 	return client, nil
 }
