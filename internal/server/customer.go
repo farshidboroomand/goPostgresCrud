@@ -17,3 +17,15 @@ func (s *EchoServer) GetAllCustomers(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, customers)
 }
+
+func (s *EchoServer) GetCustomerById(ctx echo.Context) error {
+	id := ctx.Param("id")
+
+	customer, err := s.DB.GetCustomerById(ctx.Request().Context(), id)
+
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, err)
+	}
+
+	return ctx.JSON(http.StatusOK, customer)
+}

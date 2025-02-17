@@ -37,6 +37,7 @@ func (s *EchoServer) resgiterRoutes() {
 
 	cg := s.echo.Group("/customers")
 	cg.GET("", s.GetAllCustomers)
+	cg.GET("/:id", s.GetCustomerById)
 }
 
 func (s *EchoServer) Start() error {

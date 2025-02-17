@@ -13,3 +13,11 @@ func (c Client) GetAllCustomers(ctx context.Context, emailAddress string) ([]mod
 		Find(&customers)
 	return customers, result.Error
 }
+
+func (c Client) GetCustomerById(ctx context.Context, id string) ([]models.Customer, error) {
+	var customer []models.Customer
+	result := c.DB.WithContext(ctx).
+		Where("customer_id = ?", id).
+		First(&customer)
+	return customer, result.Error
+}
