@@ -15,6 +15,7 @@ type Server interface {
 	Liveness(ctx echo.Context) error
 
 	GetAllCustomers(ctx echo.Context) error
+	GetCustomerById(ctx echo.Context) error
 }
 
 type EchoServer struct {
